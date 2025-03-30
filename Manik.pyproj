@@ -21,9 +21,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="imgDef.py" />
     <Compile Include="minuinfoDef.py" />
     <Compile Include="Manik.py" />
-    <Compile Include="portfolioDef.py" />
+    <Compile Include="portfoolioDef.py" />
+    <Compile Include="koduakenDef.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="font\" />
