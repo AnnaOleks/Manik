@@ -23,40 +23,18 @@
   <ItemGroup>
     <Compile Include="minuinfoDef.py" />
     <Compile Include="Manik.py" />
+    <Compile Include="portfolioDef.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="font\" />
     <Folder Include="img\" />
     <Folder Include="img\fon\" />
+    <Folder Include="img\nails\" />
     <Folder Include="img\pic\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="font\celindine.otf" />
     <Content Include="font\LoveSeed.ttf" />
-    <Content Include="img\fon10.jpg" />
-    <Content Include="img\fon11.jpg" />
-    <Content Include="img\fon12.jpg" />
-    <Content Include="img\fon13.jpg" />
-    <Content Include="img\fon14.jpg" />
-    <Content Include="img\fon15.jpg" />
-    <Content Include="img\fon16.jpg" />
-    <Content Include="img\fon17.jpg" />
-    <Content Include="img\fon18.jpg" />
-    <Content Include="img\fon19.jpg" />
-    <Content Include="img\fon20.jpg" />
-    <Content Include="img\fon21.jpg" />
-    <Content Include="img\fon22.jpg" />
-    <Content Include="img\fon23.jpg" />
-    <Content Include="img\fon24.jpg" />
-    <Content Include="img\fon25.jpg" />
-    <Content Include="img\fon26.jpg" />
-    <Content Include="img\fon27.jpg" />
-    <Content Include="img\fon28.jpg" />
-    <Content Include="img\fon29.jpg" />
-    <Content Include="img\fon3.jpg" />
-    <Content Include="img\fon30.jpg" />
-    <Content Include="img\fon4.jpg" />
-    <Content Include="img\fon5.jpg" />
     <Content Include="img\fon\fon1.jpg" />
     <Content Include="img\fon\fon10.jpg" />
     <Content Include="img\fon\fon11.jpg" />
@@ -86,6 +64,13 @@
     <Content Include="img\fon\fon7.jpg" />
     <Content Include="img\fon\fon8.png" />
     <Content Include="img\fon\fon9.jpg" />
+    <Content Include="img\nails\nails1.png" />
+    <Content Include="img\nails\nails2.png" />
+    <Content Include="img\nails\nails3.png" />
+    <Content Include="img\nails\nails4.png" />
+    <Content Include="img\nails\pedi1.png" />
+    <Content Include="img\nails\pedi2.png" />
+    <Content Include="img\nails\pedi3.png" />
     <Content Include="img\pic\lakk.png" />
     <Content Include="img\pic\manped.png" />
   </ItemGroup>

@@ -5,7 +5,7 @@ from PIL import Image, ImageTk, ImageFont
 from tkinter import font
 
 from minuinfoDef import *
-
+from portfolioDef import *
 
 koduaken=Tk()
 koduaken.geometry("700x850")
@@ -43,7 +43,7 @@ tekst.place(y=260, relx=0.5, anchor="center")
 minust=Button(frame, text="MINUST", font="Lora 10", bg="white", width=55, height=1, command=lambda:minuinfo(frame))
 minust.place(relx=0.5, y=390, anchor="center")
 
-portfoolio=Button(frame, text="PORTFOOLIO", font="Lora 10", bg="white", width=55, height=1)
+portfoolio=Button(frame, text="PORTFOOLIO", font="Lora 10", bg="white", width=55, height=1, command=lambda:portfolio(frame))
 portfoolio.place(relx=0.5, y=430, anchor="center")
 
 kirjapanek=Button(frame, text="PANEN ENNAST KIRJA", font="Lora 10", bg="white", width=55, height=1)

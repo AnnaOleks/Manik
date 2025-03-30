@@ -3,6 +3,8 @@ from tkinter import ttk
 from PIL import Image, ImageTk, ImageFont
 from tkinter import font
 
+from portfolioDef import *
+
 def minuinfo(frame):
     for widget in frame.winfo_children():
         widget.destroy()
@@ -11,7 +13,7 @@ def minuinfo(frame):
     logo.place(x=10, y=10)
     
     tervitusminust=Label(frame, text="Tervist!", font="Lora 18 bold", bg="white")
-    tervitusminust.place(y=130, relx=0.5, anchor="center")
+    tervitusminust.place(y=140, relx=0.5, anchor="center")
 
     tekst=Label(frame, text="""
     Ma olen Nastya, maniküüri ja pediküüri meister.
@@ -28,20 +30,14 @@ def minuinfo(frame):
     
     Hindan teie valikut! Kui teil on küsimusi - kirjutage!
     """, font="Lora 14", bg="white", wraplength=500, anchor=NW, justify=LEFT)
-    tekst.place(x=25, y=150, anchor=NW)
+    tekst.place(x=25, y=170, anchor=NW)
 
     portfooliominust=Button(frame, text="PORTFOOLIO", font="Lora 10", bg="white", width=55, height=1)
-    portfooliominust.place(relx=0.5, y=450, anchor="center")
+    portfooliominust.place(relx=0.5, y=550, anchor="center")
     
     tagasiminust=Button(frame, text="TAGASI", font="Lora 10", bg="white", width=55, height=1, command=lambda:tagasi(frame))
-    tagasiminust.place(relx=0.5, y=490, anchor="center")
+    tagasiminust.place(relx=0.5, y=590, anchor="center")
     
-    lakkimg=Image.open(r"img/pic/lakk.png")
-    resize_manpedimg=manpedimg.resize((320,200))
-    manped_image = ImageTk.PhotoImage(resize_manpedimg)
-    manped = Label(frame, image=manped_image, bg="white")
-    manped.image = manped_image
-    manped.place(x=230, y=520)
 
 def tagasi(frame):
     for widget in frame.winfo_children():
@@ -65,7 +61,7 @@ def tagasi(frame):
     minust=Button(frame, text="MINUST", font="Lora 10", bg="white", width=55, height=1, command=lambda:minuinfo(frame))
     minust.place(relx=0.5, y=390, anchor="center")
 
-    portfoolio=Button(frame, text="PORTFOOLIO", font="Lora 10", bg="white", width=55, height=1)
+    portfoolio=Button(frame, text="PORTFOOLIO", font="Lora 10", bg="white", width=55, height=1, command=lambda:portfolio(frame))
     portfoolio.place(relx=0.5, y=430, anchor="center")
 
     kirjapanek=Button(frame, text="PANEN ENNAST KIRJA", font="Lora 10", bg="white", width=55, height=1)
