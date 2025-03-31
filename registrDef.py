@@ -104,3 +104,5 @@ def kuvavabadajad(valkuupaev):
             vabadajadlistbox.insert(END, aeg)  # Добавляем каждый свободный слот
     else:
         vabadajadlistbox.insert(END, "Pole vabu aegu")  # Сообщение, если нет свободных времен
+
+
