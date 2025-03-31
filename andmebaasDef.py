@@ -2,6 +2,8 @@
 import pyodbc
 from datetime import datetime, timedelta
 
+valitud_aeg = StringVar()
+
 def baasuhendus():
     conn = pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};"
                                 "SERVER=(localdb)\MSSQLLocalDB;"
@@ -107,5 +109,9 @@ def kuvavabadajad(valkuupaev, vabadajadlistbox, algaasta, algkuu):
             vabadajadlistbox.insert(END, aeg)  # Добавляем каждый свободный слот
     else:
         vabadajadlistbox.insert(END, "Pole vabu aegu")  # Сообщение, если нет свободных времен
+    vabadajadlistbox.bind("<<ListboxSelect>>", vali_aeg)
 
+def vali_aeg(event):
+    global valitud_aeg
+    valitud_aeg.set(event.widget.get(event.widget.curselection()))
 

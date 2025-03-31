@@ -6,6 +6,7 @@ from turtle import bgcolor
 
 from andmebaasDef import kuvavabadajad
 
+
 toohoive = {paev: 0 for paev in range(1, 32)}  # по умолчанию все дни свободны
 
 def toohiveuuendus(paev, status):
@@ -51,14 +52,14 @@ def kalendriavamine():
             if paev != 0:  # Если день не равен 0 (что означает отсутствие дня в этом месте недели)
                 # Создаём кнопку для дня месяца
                 paevtekst = f"{algaasta}-{str(algkuu).zfill(2)}-{str(paev).zfill(2)}"
-                status=paevaarv(paevtekst)
-                color=staatusnum(status)
+                status = staatusnum(paevtekst)  # Исправлено
+                color = paevaarv(status)
                 paevnupp = Button(kuuframe, text=str(paev), width=3, height=1, font=("Lora", 10), command=lambda paev=paev: kuvavabadajad(paev, vabadajadlistbox, algaasta, algkuu))
                 paevnupp.grid(row=row, column=col, padx=3, pady=3)  # Размещаем кнопку в соответствующей строке и столбце
         row += 1  # Переходим к следующей строке
 
 def staatusnum(paev):
-    from registrDef import registrkogus
+    from andmebaasDef import registrkogus
 
     count=registrkogus(paev)
     maxklientpaev=6
@@ -70,8 +71,12 @@ def staatusnum(paev):
     elif count == maxklientpaev:
         return 2
     
+
 def kalenderaken(frame):
-    global algkuu, algaasta, kuuframe, kalenderframe, vabadajadlistbox
+    from koduakenDef import kodu
+    from registrDef import registraken
+
+    global algkuu, algaasta, kuuframe, kalenderframe, vabadajadlistbox, valitud_kuupaev, valitud_aeg
 
     for widget in frame.winfo_children():
         widget.destroy()
@@ -132,7 +137,7 @@ def kalenderaken(frame):
     vabadajadlistbox = Listbox(frame, font="Lora 12", height=10, width=14, selectbackground="#e1fbf3", selectforeground="black")
     vabadajadlistbox.place(x=370, y=300)
 
-    edasi=Button(frame, text="EDASI", font="Lora 10", bg="white", activebackground="#fce6ea", width=55, height=1)
+    edasi=Button(frame, text="EDASI", font="Lora 10", bg="white", activebackground="#fce6ea", width=55, height=1, command=lambda: registraken(frame))
     edasi.place(relx=0.5, y=600, anchor="center")
 
     tagasikalender=Button(frame, text="KODULEHELE", font="Lora 10", bg="white", activebackground="#e1fbf3", width=55, height=1, command=lambda: kodu(frame))

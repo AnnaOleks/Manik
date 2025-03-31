@@ -7,6 +7,7 @@ def portfolio(frame):
     from imgDef import pilt
     from minuinfoDef import minuinfo
     from koduakenDef import kodu
+    from kalenderDef import kalenderaken
 
     for widget in frame.winfo_children():
         widget.destroy()
@@ -42,5 +43,5 @@ def portfolio(frame):
     tagasiportfolio=Button(frame, text="KODULEHELE", font="Lora 10", bg="white", activebackground="#fce6ea", activeforeground="black", width=20, height=1, command=lambda: kodu(frame) )
     tagasiportfolio.place(x=80, y=600, anchor=W)
 
-    kirjapanekportfolio=Button(frame, text="PANEN ENNAST KIRJA", font="Lora 10", bg="white", activebackground="#e1fbf3", activeforeground="black", width=20, height=1)
+    kirjapanekportfolio=Button(frame, text="PANEN ENNAST KIRJA", font="Lora 10", bg="white", activebackground="#e1fbf3", activeforeground="black", width=20, height=1, command=lambda:kalenderaken(frame))
     kirjapanekportfolio.place(x=80, y=640, anchor=W)
