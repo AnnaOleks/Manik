@@ -4,6 +4,19 @@ from datetime import datetime
 from tkinter import ttk
 from turtle import bgcolor
 
+from andmebaasDef import kuvavabadajad
+
+toohoive = {paev: 0 for paev in range(1, 32)}  # по умолчанию все дни свободны
+
+def toohiveuuendus(paev, status):
+    toohoive[paev]=status
+
+def paevaarv(status):
+    if status==2:
+        return "#fce6ea"
+    elif status==1:
+        return "#e1fbf3"
+   
 def uuskuu(kuu):
     global algkuu  # Используем глобальную переменную month
     algkuu = list(calendar.month_name).index(kuu)  # Находим индекс месяца по его имени
@@ -15,7 +28,9 @@ def uusaasta(aasta):
     kalendriavamine()  # Перерисовываем календарь с новым годом
 
 def kalendriavamine():
-    from registrDef import kuvavabadajad
+    from andmebaasDef import kuvavabadajad
+
+    global kuuframe, algkuu, algaasta, vabadajadlistbox
 
     for widget in kuuframe.winfo_children():
         widget.destroy()
@@ -35,14 +50,28 @@ def kalendriavamine():
         for col, paev in enumerate(nadal):  # Перебираем каждый день в неделе
             if paev != 0:  # Если день не равен 0 (что означает отсутствие дня в этом месте недели)
                 # Создаём кнопку для дня месяца
-                paevnupp = Button(kuuframe, text=str(paev), width=3, height=1, font=("Lora", 10), command=lambda p=paev: kuva_vabad_ajad(p))
+                paevtekst = f"{algaasta}-{str(algkuu).zfill(2)}-{str(paev).zfill(2)}"
+                status=paevaarv(paevtekst)
+                color=staatusnum(status)
+                paevnupp = Button(kuuframe, text=str(paev), width=3, height=1, font=("Lora", 10), command=lambda paev=paev: kuvavabadajad(paev, vabadajadlistbox, algaasta, algkuu))
                 paevnupp.grid(row=row, column=col, padx=3, pady=3)  # Размещаем кнопку в соответствующей строке и столбце
         row += 1  # Переходим к следующей строке
 
+def staatusnum(paev):
+    from registrDef import registrkogus
+
+    count=registrkogus(paev)
+    maxklientpaev=6
+
+    if count==0:
+        return 0
+    elif count > 0 and count < maxklientpaev:
+        return 1
+    elif count == maxklientpaev:
+        return 2
     
 def kalenderaken(frame):
-    from koduakenDef import kodu
-    global algkuu, algaasta, kuuframe, kalenderframe
+    global algkuu, algaasta, kuuframe, kalenderframe, vabadajadlistbox
 
     for widget in frame.winfo_children():
         widget.destroy()
@@ -99,6 +128,12 @@ def kalenderaken(frame):
 
     vabadajad=Label(frame, text="Vabad ajad:", font="Lora 12 bold", fg="black", bg="white")
     vabadajad.place(x=370, y=270)
+
+    vabadajadlistbox = Listbox(frame, font="Lora 12", height=10, width=14, selectbackground="#e1fbf3", selectforeground="black")
+    vabadajadlistbox.place(x=370, y=300)
+
+    edasi=Button(frame, text="EDASI", font="Lora 10", bg="white", activebackground="#fce6ea", width=55, height=1)
+    edasi.place(relx=0.5, y=600, anchor="center")
 
     tagasikalender=Button(frame, text="KODULEHELE", font="Lora 10", bg="white", activebackground="#e1fbf3", width=55, height=1, command=lambda: kodu(frame))
     tagasikalender.place(relx=0.5, y=640, anchor="center")

@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="andmebaasDef.py" />
     <Compile Include="imgDef.py" />
     <Compile Include="kalenderDef.py" />
     <Compile Include="minuinfoDef.py" />
