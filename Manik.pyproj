@@ -22,10 +22,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="imgDef.py" />
+    <Compile Include="kalenderDef.py" />
     <Compile Include="minuinfoDef.py" />
     <Compile Include="Manik.py" />
     <Compile Include="portfoolioDef.py" />
     <Compile Include="koduakenDef.py" />
+    <Compile Include="registrDef.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="font\" />
@@ -73,6 +75,7 @@
     <Content Include="img\nails\pedi1.png" />
     <Content Include="img\nails\pedi2.png" />
     <Content Include="img\nails\pedi3.png" />
+    <Content Include="img\pic\french.png" />
     <Content Include="img\pic\lakk.png" />
     <Content Include="img\pic\manped.png" />
   </ItemGroup>

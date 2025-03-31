@@ -1,11 +1,13 @@
 from tkinter import *
 from PIL import Image, ImageTk, ImageFont
 
-from imgDef import *
-from minuinfoDef import *
-from koduakenDef import *
+
 
 def portfolio(frame):
+    from imgDef import pilt
+    from minuinfoDef import minuinfo
+    from koduakenDef import kodu
+
     for widget in frame.winfo_children():
         widget.destroy()
 
@@ -37,5 +39,8 @@ def portfolio(frame):
     nails3.image = nails3img
     nails3.place(x=270, y=470)
 
-    tagasiportfolio=Button(frame, text="TAGASI", font="Lora 10", bg="white", width=55, height=1, command=lambda: kodu(frame))
-    tagasiportfolio.place(relx=0.5, y=590, anchor="center")
+    tagasiportfolio=Button(frame, text="KODULEHELE", font="Lora 10", bg="white", activebackground="#fce6ea", activeforeground="black", width=20, height=1, command=lambda: kodu(frame) )
+    tagasiportfolio.place(x=80, y=600, anchor=W)
+
+    kirjapanekportfolio=Button(frame, text="PANEN ENNAST KIRJA", font="Lora 10", bg="white", activebackground="#e1fbf3", activeforeground="black", width=20, height=1)
+    kirjapanekportfolio.place(x=80, y=640, anchor=W)
