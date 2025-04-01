@@ -51,7 +51,7 @@ def regklient():
         cursor = conn.cursor()
         
         # Проверяем, существует ли клиент
-        cursor.execute('SELECT id FROM kliendid WHERE nimi = ?', (nimi,))
+        cursor.execute('SELECT id FROM kliendid WHERE email = ? OR tel = ?', (email, tel))
         klient = cursor.fetchone()
         if klient:
             klient_id = klient[0]
@@ -95,6 +95,8 @@ def regklient():
 
 def registraken(frame,):
     from andmebaasDef import valitud_kuupaev, valitud_aeg, baasuhendus
+    from kalenderDef import kalenderaken
+    from koduakenDef import kodu
 
     global nimientry, emailentry, telentry, teenusenimi, kuupaeventry, aegentry
     from andmebaasDef import valitud_kuupaev, valitud_aeg
@@ -132,7 +134,7 @@ def registraken(frame,):
         teenused = cursor.fetchall()
         teenusvar['values'] = [f"{s[0]} - {s[1]}" for s in teenused]
 
-    from andmebaasDef import valitud_kuupaev, valitud_aeg
+    
 
     kuupaev_label=Label(frame, text="Kuupäev:", font="Lora 12 bold", bg="white", width=15, justify=LEFT, anchor=NW)
     kuupaev_label.place(x=50, y=340)
@@ -144,5 +146,11 @@ def registraken(frame,):
     aegentry = Entry(frame, font="Lora 12", bg="white", width=39, textvariable=valitud_aeg) 
     aegentry.place(x=140, y=380)
 
-    submit_button = Button(frame, text="Broneeri", font="Lora 10", bg="white", width=55, height=1, activebackground="#fce6ea", activeforeground="black", command=lambda: regklient())  # Call regklient
+    submit_button = Button(frame, text="BRONEERI", font="Lora 10", bg="white", width=55, height=1, activebackground="#fce6ea", activeforeground="black", command=lambda: regklient())  # Call regklient
     submit_button.place(relx=0.5, y=470, anchor="center")
+
+    back_button = Button(frame, text="TAGASI", font="Lora 10", bg="white", width=55, height=1, activebackground="#e1fbf3", activeforeground="black", command=lambda: kalenderaken(frame))
+    back_button.place(relx=0.5, y=510, anchor="center")
+
+    tagasiminust=Button(frame, text="KODULEHELE", font="Lora 10", bg="white", activebackground="#e1fbf3", width=55, height=1, command=lambda: kodu(frame))
+    tagasiminust.place(relx=0.5, y=550, anchor="center")
