@@ -1,20 +1,23 @@
-﻿from tkinter import *
-import pyodbc
+﻿import pyodbc
 from datetime import datetime, timedelta
+from tkinter import END
 
-valitud_aeg = StringVar()
+# Эти переменные теперь обычные строки (можно задавать их позже вручную из GUI)
+valitud_aeg = ""
+valitud_kuupaev = ""
 
 def baasuhendus():
-    conn = pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};"
-                                "SERVER=(localdb)\MSSQLLocalDB;"
-                                "DATABASE=manik;"
-                                "Trusted_Connection=yes;")
+    conn = pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};"
+        "SERVER=(localdb)\\MSSQLLocalDB;"
+        "DATABASE=manik;"
+        "Trusted_Connection=yes;"
+    )
     return conn
 
 def registrkogus(paev):
-    conn=baasuhendus()
+    conn = baasuhendus()
     cursor = conn.cursor()
-
     query = """
         SELECT COUNT(*) 
         FROM registr 
@@ -22,48 +25,39 @@ def registrkogus(paev):
     """
     cursor.execute(query, (paev,))
     count = cursor.fetchone()[0]
-    
     conn.close()
     return count
 
 def lisaklient(klient_id, teenus_id, kuupaev, aeg):
-    conn=baasuhendus()
+    conn = baasuhendus()
     cursor = conn.cursor()
-
-    # SQL-запрос для добавления бронирования
     query = '''
     INSERT INTO registr (klient_id, teenus_id, kuupaev, aeg)
-    VALUES (?, ?, ?, ?)
-    '''
+    VALUES (?, ?, ?, ?)'''
     cursor.execute(query, (klient_id, teenus_id, kuupaev, aeg))
     conn.commit()
     conn.close()
 
 def regajadelist(kuupaev):
-    conn=baasuhendus()
+    conn = baasuhendus()
     cursor = conn.cursor()
-
-    # SQL-запрос для получения всех забронированных интервалов для определенного дня
     query = '''
     SELECT aeg, kestvus 
     FROM registr
     JOIN teenused ON registr.teenus_id = teenused.id
-    WHERE kuupaev = ?
-    '''
+    WHERE kuupaev = ?'''
     cursor.execute(query, (kuupaev,))
     result = cursor.fetchall()
-
-    conn.close()  
+    conn.close()
     return result
 
 def vabadajad(kuupaev):
-    conn=baasuhendus()
+    conn = baasuhendus()
     cursor = conn.cursor()
 
     tooalgus = datetime.strptime("09:00", "%H:%M")
     toolopp = datetime.strptime("18:00", "%H:%M")
 
-    # Все возможные временные интервалы для рабочего дня (каждые 30 минут)
     koikajad = []
     algus = tooalgus
     while algus < toolopp:
@@ -71,10 +65,8 @@ def vabadajad(kuupaev):
         koikajad.append((algus.strftime("%H:%M"), jargaeg.strftime("%H:%M")))
         algus = jargaeg
 
-    # Получаем все забронированные интервалы для выбранного дня
     regajad = regajadelist(kuupaev)
 
-     # Свободные интервалы
     vabadajad = []
     for interval in koikajad:
         kinni = False
@@ -82,36 +74,43 @@ def vabadajad(kuupaev):
         loppaeg = datetime.strptime(interval[1], "%H:%M")
 
         for regaeg in regajad:
-            regalgus = datetime.strptime(regaeg[0], "%H:%M")
-            reglopp = regalgus + timedelta(minutes=regaeg[1])  # добавляем длительность услуги
+            kestvus = regaeg[1]
+            time_str = str(regaeg[0])
+            try:
+                regalgus = datetime.strptime(time_str, "%H:%M")
+            except ValueError:
+                regalgus = datetime.strptime(time_str, "%H:%M:%S")
 
-            # Проверяем, пересекается ли текущий интервал с забронированным
+            reglopp = regalgus + timedelta(minutes=kestvus)
+
             if (regalgus <= algaeg < reglopp) or (regalgus < loppaeg <= reglopp):
                 kinni = True
                 break
 
         if not kinni:
             vabadajad.append(interval)
+
     conn.close()
     return vabadajad
 
 def kuvavabadajad(valkuupaev, vabadajadlistbox, algaasta, algkuu):
-    from kalenderDef import kalenderaken
+    import andmebaasDef
 
-    kuupaev = f"{algaasta}-{algkuu:02d}-{valkuupaev:02d}"  # Форматируем дату YYYY-MM-DD
+    kuupaev = f"{algaasta}-{algkuu:02d}-{valkuupaev:02d}"
+    vabadajadlistbox.delete(0, END)
 
-    vabadajadlistbox.delete(0, END)  # Очищаем список перед обновлением
+    andmebaasDef.valitud_kuupaev = kuupaev
 
-    vabad_ajad = vabadajad(kuupaev)  # Получаем список свободных времен
+    vabad_ajad = vabadajad(kuupaev)
     if vabad_ajad:
         for algus, lopp in vabad_ajad:
-            aeg = f"{algus} - {lopp}" 
-            vabadajadlistbox.insert(END, aeg)  # Добавляем каждый свободный слот
+            aeg = f"{algus} - {lopp}"
+            vabadajadlistbox.insert(END, aeg)
     else:
-        vabadajadlistbox.insert(END, "Pole vabu aegu")  # Сообщение, если нет свободных времен
+        vabadajadlistbox.insert(END, "Pole vabu aegu")
+
     vabadajadlistbox.bind("<<ListboxSelect>>", vali_aeg)
 
 def vali_aeg(event):
-    global valitud_aeg
-    valitud_aeg.set(event.widget.get(event.widget.curselection()))
-
+    import andmebaasDef
+    andmebaasDef.valitud_aeg = event.widget.get(event.widget.curselection())

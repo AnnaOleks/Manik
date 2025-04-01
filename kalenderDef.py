@@ -4,7 +4,7 @@ from datetime import datetime
 from tkinter import ttk
 from turtle import bgcolor
 
-from andmebaasDef import kuvavabadajad
+import andmebaasDef 
 
 
 toohoive = {paev: 0 for paev in range(1, 32)}  # по умолчанию все дни свободны
@@ -47,34 +47,32 @@ def kalendriavamine():
     paevad = calendar.monthcalendar(algaasta, algkuu)
 
     row = 2  # Начинаем с третьей строки для отображения дней
-    for nadal in paevad:  # Перебираем каждую неделю в календаре
-        for col, paev in enumerate(nadal):  # Перебираем каждый день в неделе
-            if paev != 0:  # Если день не равен 0 (что означает отсутствие дня в этом месте недели)
-                # Создаём кнопку для дня месяца
+    for nadal in paevad:
+        for col, paev in enumerate(nadal):
+            if paev != 0:
                 paevtekst = f"{algaasta}-{str(algkuu).zfill(2)}-{str(paev).zfill(2)}"
-                status = staatusnum(paevtekst)  # Исправлено
+                status = staatusnum(paevtekst)
                 color = paevaarv(status)
-                paevnupp = Button(kuuframe, text=str(paev), width=3, height=1, font=("Lora", 10), command=lambda paev=paev: kuvavabadajad(paev, vabadajadlistbox, algaasta, algkuu))
-                paevnupp.grid(row=row, column=col, padx=3, pady=3)  # Размещаем кнопку в соответствующей строке и столбце
-        row += 1  # Переходим к следующей строке
+
+                paevnupp = Button(kuuframe, text=str(paev), width=3, height=1, font=("Lora", 10), bg=color, command=lambda paev=paev: kuvavabadajad(paev, vabadajadlistbox, algaasta, algkuu))
+                paevnupp.grid(row=row, column=col, padx=3, pady=3)
+        row += 1
 
 def staatusnum(paev):
-    from andmebaasDef import registrkogus
+    from andmebaasDef import vabadajad
 
-    count=registrkogus(paev)
-    maxklientpaev=6
+    vabad = vabadajad(paev)
 
-    if count==0:
-        return 0
-    elif count > 0 and count < maxklientpaev:
-        return 1
-    elif count == maxklientpaev:
-        return 2
-    
+    if not vabad:
+        return 2  # розовый — все слоты заняты
+    elif len(vabad) < 6:
+        return 1  # зелёный — остались только некоторые
+    else:
+        return 0  # белый — день полностью свободен    
 
 def kalenderaken(frame):
     from koduakenDef import kodu
-    from registrDef import registraken
+    from registrDef import registraken, uuendavorm
 
     global algkuu, algaasta, kuuframe, kalenderframe, vabadajadlistbox, valitud_kuupaev, valitud_aeg
 
@@ -137,7 +135,7 @@ def kalenderaken(frame):
     vabadajadlistbox = Listbox(frame, font="Lora 12", height=10, width=14, selectbackground="#e1fbf3", selectforeground="black")
     vabadajadlistbox.place(x=370, y=300)
 
-    edasi=Button(frame, text="EDASI", font="Lora 10", bg="white", activebackground="#fce6ea", width=55, height=1, command=lambda: registraken(frame))
+    edasi=Button(frame, text="EDASI", font="Lora 10", bg="white", activebackground="#fce6ea", width=55, height=1, command=lambda: [registraken(frame), uuendavorm()])
     edasi.place(relx=0.5, y=600, anchor="center")
 
     tagasikalender=Button(frame, text="KODULEHELE", font="Lora 10", bg="white", activebackground="#e1fbf3", width=55, height=1, command=lambda: kodu(frame))
